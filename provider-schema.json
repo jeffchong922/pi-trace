@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "defaultProvider": {
+      "type": "string",
+      "description": "默认 provider 的 key"
+    },
+    "useProxy": {
+      "type": "boolean",
+      "description": "是否使用代理路径"
+    },
+    "proxyForwardRequest": {
+      "type": "boolean",
+      "description": "代理是否转发请求"
+    },
+    "providers": {
+      "type": "object",
+      "description": "配置可以被代理的 provider",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "菜单选择时候的显示名称"
+          },
+          "originalUrl": {
+            "type": "string",
+            "description": "默认的请求路径。如果通过 provider.json 配置的 provider，需要填写或者先关闭代理配置让插件可以读到原始路径"
+          },
+          "proxyUrl": {
+            "type": "string",
+            "description": "自定义的基础代理请求路径"
+          },
+          "apiKey": {
+            "type": "string",
+            "description": "模型供应商提供的 key"
+          },
+          "defaultModel": {
+            "type": "string",
+            "description": "当前 provider 的默认模型 id"
+          },
+          "defaultModelApi": {
+            "type": "string",
+            "description": "模型的类型，关联 express 路由"
+          }
+        }
+      }
+    }
+  }
+}
