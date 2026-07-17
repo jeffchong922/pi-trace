@@ -1,5 +1,7 @@
 # pi-trace
 
+**⚠️ 目前仅针对 DeepSeek 的请求做了处理，其他模型大概率失败**
+
 **pi-trace** 是 [pi-coding-agent](https://github.com/Earendil-Works/pi-coding-agent) 的一款扩展，提供 **大模型 API 请求的代理转发与全链路追踪** 功能。
 
 通过拦截 pi-code-agent 的大模型请求，pi-trace 能够：
@@ -58,9 +60,6 @@ src/
 │                                                          │
 │  日志输出: .traces/{sessionId}/                          │
 │            ├── summary.txt        (全部事件汇总)          │
-│            ├── model_select.txt    (模型选择事件)          │
-│            ├── tool_call.txt       (工具调用事件)          │
-│            ├── turn_start.txt      (轮次事件)              │
 │            └── request/            (HTTP 请求日志)         │
 │                 ├── 01.json                               │
 │                 ├── 02.json                               │
@@ -75,8 +74,13 @@ src/
 ### 安装
 
 ```bash
-# 在 pi-code-agent 扩展目录中安装
-pi extension add /path/to/pi-trace
+pi install https://github.com/jeffchong922/pi-trace
+```
+
+### 卸载
+
+```bash
+pi remove https://github.com/jeffchong922/pi-trace
 ```
 
 ### 使用
@@ -109,12 +113,10 @@ pi extension add /path/to/pi-trace
 ```
 .traces/
 └── session_abc123/
-    ├── summary.txt          # 全部事件时间线
     ├── request/
     │   ├── 01.json           # 第 1 轮：请求 + 响应
     │   └── 02.json           # 第 2 轮：请求 + 响应
-    ├── tool_call.txt         # 工具调用详情
-    └── ...
+    └── summary.txt          # 全部事件时间线
 ```
 
 每轮请求的 JSON 日志格式：
@@ -151,11 +153,8 @@ pi extension add /path/to/pi-trace
   "providers": {
     "deepseek": {
       "name": "DeepSeek",
-      "originalUrl": "https://api.deepseek.com/v1",
-      "proxyUrl": "http://localhost:12345/openai-completions",
+      "originalUrl": "https://api.deepseek.com",
       "apiKey": "sk-xxx",
-      "defaultModel": "deepseek-chat",
-      "defaultModelApi": "/openai-completions"
     }
   }
 }
