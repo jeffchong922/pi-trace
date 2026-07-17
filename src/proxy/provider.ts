@@ -133,9 +133,9 @@ export function registerProvider(pi: ExtensionAPI) {
  */
 export function updateProvider(pi: ExtensionAPI, key?: string, ctx?: ExtensionContext) {
   const providerSettings = getProviderSettings()
-  const usedProviderKey = key || providerSettings.defaultProvider
+  const usedProviderKey = (key === 'unknown' ? '' : key) || providerSettings.defaultProvider
 
-  if (!usedProviderKey || usedProviderKey === 'unknown') return
+  if (!usedProviderKey) return
 
   const providerRecord = providerSettings.providers || {}
   const providerInfo = { ...(providerRecord[usedProviderKey] || {}) }
@@ -246,7 +246,9 @@ export function updateProviderSettings(data: ProviderSettings) {
     makeProjectPiDir()
   }
   const currentSettings = getProviderSettings()
-  writeFileSync(resolve(getProjectPiDir(), providerFileName), JSON.stringify(Object.assign({}, currentSettings, data), undefined, 2), { encoding: 'utf8' })
+  writeFileSync(resolve(getProjectPiDir(), providerFileName), JSON.stringify(Object.assign({
+    "$schema": "https://raw.githubusercontent.com/jeffchong922/pi-trace/main/provider-schema.json"
+  }, currentSettings, data), undefined, 2), { encoding: 'utf8' })
 }
 
 /** 获取供应商记录映射（从配置中提取 providers 字段） */
